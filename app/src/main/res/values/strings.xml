@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Kountries</string>
+    <string name="action_settings">Settings</string>
+    <string name="country_info">Kountry Information</string>
+    <string name="search_hint">Search Here</string>
+    <string name="title_activity_kountry_detail">KountryDetailActivity</string>
+    <string name="country_name_placeholder">Bangladesh</string>
+    <string name="country_name_official_placeholder">Republic Of Bangladesh</string>
+    <string name="capital_placeholder">Dhaka</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
