@@ -6,32 +6,60 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.app.SearchManager
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.net.Uri
+import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import com.thyme.smalam119.kountries.Model.Kountry
+import com.thyme.smalam119.kountries.FavoriteKountryListFragment
 import com.thyme.smalam119.kountries.Model.KountryLocal
-import com.thyme.smalam119.kountries.Network.ApiService
 import com.thyme.smalam119.kountries.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteractionListener,
+        FavoriteKountryListFragment.OnFragmentInteractionListener {
+    override fun onFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     var toolbar: Toolbar? = null
-    var recyclerVIew: RecyclerView? = null
-    var progressBar: ProgressBar? = null
-    var adapter: KountryListAdapter? = null
+    var kountryListFragment: KountryListFragment? = null
+    var bottomNavigationView: BottomNavigationView? = null
+    var searchView: SearchView? = null
+
+    private val mOnNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener {
+
+        override fun onNavigationItemSelected(item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.home -> {
+                    kountryListFragment = KountryListFragment.Companion.newInstance("","")
+                    addFragment(kountryListFragment!!)
+                    toolbar!!.visibility = View.VISIBLE
+                    return true
+                }
+                R.id.favorite -> {
+                    val fragment = FavoriteKountryListFragment.Companion.newInstance("","")
+                    addFragment(fragment)
+                    toolbar!!.visibility = View.INVISIBLE
+                    return true
+                }
+            }
+            return false
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        prepareViews()
-        makeGetAllCountryNetworkCall()
+        prepareToolBar()
+        bottomNavigationView = findViewById(R.id.navigation_bottom)
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        kountryListFragment = KountryListFragment.Companion.newInstance("","")
+        addFragment(kountryListFragment!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -40,73 +68,45 @@ class MainActivity : AppCompatActivity() {
         prepareSearchView(menu)
         return true
     }
-
-    fun makeGetAllCountryNetworkCall() {
-        progressBar!!.visibility = View.VISIBLE
-        var apiService = ApiService.create()
-        apiService.getAllKountries()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe ({
-                    result ->
-                    progressBar!!.visibility = View.GONE
-                    prepareAdapter(result)
-                }, { error ->
-                    progressBar!!.visibility = View.GONE
-                    error.printStackTrace()
-                })
-    }
-
-    fun prepareViews() {
-        prepareToolBar()
-        prepareRecyclerView()
-        prepareProgressBar()
-    }
-
     fun prepareToolBar() {
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         //supportActionBar.apply { title = "Kountries" }
     }
 
-    fun prepareRecyclerView() {
-        recyclerVIew = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerVIew!!.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-    }
-
     fun prepareSearchView(menu: Menu?) {
         var menuItem = menu!!.findItem(R.id.search)
-        var searchView = menuItem.actionView as SearchView
+        searchView = menuItem.actionView as SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.queryHint = "enter country name"
-        searchView.setSearchableInfo(
+        searchView!!.queryHint = "enter country name"
+        searchView!!.setSearchableInfo(
                 searchManager.getSearchableInfo(componentName))
-        searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView!!.maxWidth = Int.MAX_VALUE
+        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // filter recycler view when query submitted
                 Log.d("MainActivity", query)
-                adapter!!.getFilter().filter(query)
+                kountryListFragment!!.adapter!!.getFilter().filter(query)
                 return false
             }
 
             override fun onQueryTextChange(query: String): Boolean {
                 // filter recycler view when text is changed
                 Log.d("MainActivity", query)
-                adapter!!.getFilter().filter(query)
+                kountryListFragment!!.adapter!!.getFilter().filter(query)
                 return false
             }
         })
     }
 
-    fun prepareProgressBar() {
-        progressBar = findViewById(R.id.progressBar)
+    private fun addFragment(fragment: Fragment) {
+        supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
+                .replace(R.id.content, fragment, fragment.javaClass.getSimpleName())
+                .commit()
     }
 
-    fun prepareAdapter(kountryList: ArrayList<Kountry>) {
-        adapter = KountryListAdapter(kountryList)
-        recyclerVIew!!.adapter = adapter
-    }
 
     fun getMockData(): ArrayList<KountryLocal> {
         val countryList = ArrayList<KountryLocal>()

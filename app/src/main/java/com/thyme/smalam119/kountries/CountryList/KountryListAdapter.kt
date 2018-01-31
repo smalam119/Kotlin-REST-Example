@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
-import android.widget.Toast
 import com.squareup.picasso.Picasso
 import com.thyme.smalam119.kountries.Cons
 import com.thyme.smalam119.kountries.KountryDetailActivity
@@ -38,7 +37,6 @@ class KountryListAdapter(val kountryList: ArrayList<Kountry>): RecyclerView.Adap
                 .with(holder?.itemView?.context)
                 .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
                 .into(holder?.flagImageView)
-        holder?.favButton!!.setOnClickListener({ v -> Toast.makeText(v.context, "You clicked fav", Toast.LENGTH_SHORT).show() })
         holder?.itemView!!.setOnClickListener({ v ->
             val intent = Intent(holder?.itemView!!.context, KountryDetailActivity::class.java)
             intent.putExtra(Cons.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)

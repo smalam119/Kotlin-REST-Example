@@ -15,7 +15,6 @@ class KountryListHolder(view: View): RecyclerView.ViewHolder(view) {
     var countryNameTV: TextView? = null
     var countryNameOfficialTV: TextView? = null
     var capitalNameTV: TextView? = null
-    var favButton: ImageButton? = null
     var flagImageView: ImageView? = null
 
     init {
@@ -27,7 +26,6 @@ class KountryListHolder(view: View): RecyclerView.ViewHolder(view) {
         countryNameOfficialTV = view.findViewById<TextView>(R.id.country_name_official_text_view)
         capitalNameTV = view.findViewById<TextView>(R.id.capital_text_view)
         flagImageView = view.findViewById<ImageView>(R.id.flag_image_view)
-        favButton = view.findViewById<ImageButton>(R.id.fav_button)
 
     }
 }

@@ -28,24 +28,13 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/navigation_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_16dp"
-        android:layout_marginLeft="@dimen/margin_16dp">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:visibility="gone"
-        android:layout_centerInParent="true"/>
+        android:layout_above="@+id/navigation_bottom">
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_bottom"

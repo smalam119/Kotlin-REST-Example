@@ -14,6 +14,6 @@
         android:id="@+id/favorite"
         android:icon="@drawable/favorite_icon"
         android:orderInCategory="100"
-        android:title="Favorite"
+        android:title="About"
         app:showAsAction="never" />
 </menu>

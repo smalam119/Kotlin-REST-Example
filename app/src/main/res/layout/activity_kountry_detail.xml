@@ -52,7 +52,7 @@
                             android:id="@+id/name_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dhaka"
+                            android:text="Loading..."
                             android:layout_marginLeft="@dimen/margin_8dp"
                             android:layout_gravity="center"
                             style="@style/DefaultTextView"/>
@@ -74,7 +74,7 @@
                             android:id="@+id/capital_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dhaka"
+                            android:text="Loading..."
                             android:layout_marginLeft="@dimen/margin_8dp"
                             style="@style/DefaultTextView"/>
 
@@ -95,7 +95,7 @@
                             android:id="@+id/area_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="50000"
+                            android:text="Loading..."
                             android:textColor="@color/black"
                             android:layout_marginLeft="@dimen/margin_8dp"
                             style="@style/DefaultTextView"/>
@@ -117,7 +117,7 @@
                             android:id="@+id/population_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="16000000"
+                            android:text="Loading..."
                             style="@style/DefaultTextView"
                             android:layout_marginLeft="@dimen/margin_8dp"/>
 
@@ -138,7 +138,7 @@
                             android:id="@+id/region_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="South Asia, Asia"
+                            android:text="Loading..."
                             style="@style/DefaultTextView"
                             android:layout_marginLeft="@dimen/margin_8dp"/>
 
@@ -159,7 +159,7 @@
                             android:id="@+id/time_zone_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="UTC-06:00"
+                            android:text="Loading..."
                             style="@style/DefaultTextView"
                             android:layout_marginLeft="@dimen/margin_8dp"/>
 
@@ -180,7 +180,7 @@
                             android:id="@+id/language_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bangla"
+                            android:text="Loading..."
                             android:layout_marginLeft="@dimen/margin_8dp"
                             style="@style/DefaultTextView"/>
 
@@ -201,7 +201,7 @@
                             android:id="@+id/currency_text_view_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Taka"
+                            android:text="Loading..."
                             style="@style/DefaultTextView"
                             android:layout_marginLeft="@dimen/margin_8dp"/>
 

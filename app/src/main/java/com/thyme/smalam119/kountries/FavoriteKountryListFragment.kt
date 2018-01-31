@@ -1,31 +1,29 @@
-package com.thyme.smalam119.kountries.CountryList
+package com.thyme.smalam119.kountries
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import com.thyme.smalam119.kountries.Model.Kountry
-import com.thyme.smalam119.kountries.Network.ApiService
 
-import com.thyme.smalam119.kountries.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
-class KountryListFragment : Fragment() {
+/**
+ * A simple [Fragment] subclass.
+ * Activities that contain this fragment must implement the
+ * [FavoriteKountryListFragment.OnFragmentInteractionListener] interface
+ * to handle interaction events.
+ * Use the [FavoriteKountryListFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class FavoriteKountryListFragment : Fragment() {
+
+    // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    private var mListener: OnFragmentInteractionListener? = null
 
-    var recyclerVIew: RecyclerView? = null
-    var progressBar: ProgressBar? = null
-    var adapter: KountryListAdapter? = null
+    private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +36,7 @@ class KountryListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var view = inflater!!.inflate(R.layout.fragment_kountry_list, container, false)
-        prepareViews(view)
-        makeGetAllCountryNetworkCall()
-        return view
+        return inflater!!.inflate(R.layout.fragment_favorite_kountry_list, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -65,43 +60,6 @@ class KountryListFragment : Fragment() {
         mListener = null
     }
 
-    fun prepareViews(view: View) {
-        prepareRecyclerView(view)
-        prepareProgressBar(view)
-    }
-
-
-
-    fun prepareRecyclerView(view: View) {
-        recyclerVIew = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerVIew!!.layoutManager = LinearLayoutManager(view.context, LinearLayout.VERTICAL, false)
-    }
-
-    fun prepareProgressBar(view: View) {
-        progressBar = view.findViewById(R.id.progressBar)
-    }
-
-    fun prepareAdapter(kountryList: ArrayList<Kountry>) {
-        adapter = KountryListAdapter(kountryList)
-        recyclerVIew!!.adapter = adapter
-    }
-
-    fun makeGetAllCountryNetworkCall() {
-        progressBar!!.visibility = View.VISIBLE
-        var apiService = ApiService.create()
-        apiService.getAllKountries()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe ({
-                    result ->
-                    progressBar!!.visibility = View.GONE
-                    prepareAdapter(result)
-                }, { error ->
-                    progressBar!!.visibility = View.GONE
-                    error.printStackTrace()
-                })
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -117,10 +75,22 @@ class KountryListFragment : Fragment() {
     }
 
     companion object {
+        // TODO: Rename parameter arguments, choose names that match
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
-        fun newInstance(param1: String, param2: String): KountryListFragment {
-            val fragment = KountryListFragment()
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment FavoriteKountryListFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        fun newInstance(param1: String, param2: String): FavoriteKountryListFragment {
+            val fragment = FavoriteKountryListFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

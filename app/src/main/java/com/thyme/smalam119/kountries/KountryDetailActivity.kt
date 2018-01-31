@@ -3,7 +3,6 @@ package com.thyme.smalam119.kountries
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -91,7 +90,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         capitalTV!!.text = kountry.capital
 
         areaTV = findViewById(R.id.area_text_view_detail)
-        areaTV!!.text = kountry.area.toString() + "km^2"
+        areaTV!!.text = kountry.area.toString() + " km^2"
 
         populationTV = findViewById(R.id.population_text_view_detail)
         populationTV!!.text = kountry.population.toString()
