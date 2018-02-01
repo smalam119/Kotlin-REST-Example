@@ -5,7 +5,7 @@ Cardview, Fragments, SearchView etc altogether in Kotlin. As a end product this 
 For country list [REST Countries](https://github.com/fayder/restcountries) API is used and [Flags](https://github.com/emcrisostomo/flags) API
 for flags image.
 
-[Download]() it from Google Play
+[Download](https://play.google.com/store/apps/details?id=com.thyme.smalam119.kountries&hl=en) it from Google Play
 
 <img src="https://github.com/smalam119/Kotlin-REST-Example/blob/master/Screenshot_2018-02-02-00-31-09.png" align="left" width="300"/>
 <img src="https://github.com/smalam119/Kotlin-REST-Example/blob/master/Screenshot_2018-02-01-23-18-02.png" align="left" width="300"/>
