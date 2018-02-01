@@ -1,5 +1,6 @@
 package com.thyme.smalam119.kountries.Network
 
+import com.thyme.smalam119.kountries.Cons
 import com.thyme.smalam119.kountries.Model.Kountry
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -11,23 +12,19 @@ import retrofit2.http.Path
 /**
  * Created by smalam119 on 1/30/18.
  */
-public interface ApiService {
+interface ApiService {
     @GET("rest/v2/all")
     fun getAllKountries(): Observable<ArrayList<Kountry>>
 
     @GET("rest/v2/alpha/{code}")
     fun getKountry(@Path("code") alpha2Code: String): Observable<Kountry>
 
-
-    /**
-     * Companion object to create the GithubApiService
-     */
     companion object Factory {
         fun create(): ApiService {
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl("https://restcountries.eu/")
+                    .baseUrl(Cons.BASE_URL)
                     .build()
 
             return retrofit.create(ApiService::class.java)

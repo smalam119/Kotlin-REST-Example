@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.CountryList
+package com.thyme.smalam119.kountries.KountryList
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,18 +10,16 @@ import android.net.Uri
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import com.thyme.smalam119.kountries.FavoriteKountryListFragment
-import com.thyme.smalam119.kountries.Model.KountryLocal
+import com.thyme.smalam119.kountries.About.AboutFragment
 import com.thyme.smalam119.kountries.R
 
 
 class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteractionListener,
-        FavoriteKountryListFragment.OnFragmentInteractionListener {
+        AboutFragment.OnFragmentInteractionListener {
+
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     var toolbar: Toolbar? = null
@@ -29,6 +27,7 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
     var bottomNavigationView: BottomNavigationView? = null
     var searchView: SearchView? = null
 
+    // bottom navigation item selection
     private val mOnNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener {
 
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
                     return true
                 }
                 R.id.favorite -> {
-                    val fragment = FavoriteKountryListFragment.Companion.newInstance("","")
+                    val fragment = AboutFragment.Companion.newInstance("","")
                     addFragment(fragment)
                     toolbar!!.visibility = View.INVISIBLE
                     return true
@@ -54,11 +53,8 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        prepareToolBar()
-        bottomNavigationView = findViewById(R.id.navigation_bottom)
-        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
-        kountryListFragment = KountryListFragment.Companion.newInstance("","")
+        prepareAllView()
+        // add kountry list fragment as default fragment
         addFragment(kountryListFragment!!)
     }
 
@@ -68,31 +64,42 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
         prepareSearchView(menu)
         return true
     }
+
+    fun prepareAllView() {
+        prepareToolBar()
+        prepareBottomNavView()
+        kountryListFragment = KountryListFragment.Companion.newInstance("","")
+    }
+
     fun prepareToolBar() {
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        //supportActionBar.apply { title = "Kountries" }
+    }
+
+    fun prepareBottomNavView() {
+        bottomNavigationView = findViewById(R.id.navigation_bottom)
+        bottomNavigationView!!.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     fun prepareSearchView(menu: Menu?) {
         var menuItem = menu!!.findItem(R.id.search)
+
+        //getting search view reference from menu item
         searchView = menuItem.actionView as SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView!!.queryHint = "enter country name"
         searchView!!.setSearchableInfo(
                 searchManager.getSearchableInfo(componentName))
         searchView!!.maxWidth = Int.MAX_VALUE
+
+        //query text listener for search view
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                // filter recycler view when query submitted
-                Log.d("MainActivity", query)
                 kountryListFragment!!.adapter!!.getFilter().filter(query)
                 return false
             }
 
             override fun onQueryTextChange(query: String): Boolean {
-                // filter recycler view when text is changed
-                Log.d("MainActivity", query)
                 kountryListFragment!!.adapter!!.getFilter().filter(query)
                 return false
             }
@@ -107,12 +114,4 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
                 .commit()
     }
 
-
-    fun getMockData(): ArrayList<KountryLocal> {
-        val countryList = ArrayList<KountryLocal>()
-        countryList.add(KountryLocal("Bangladesh", "Republic Of Bangladesh", "Dhaka"))
-        countryList.add(KountryLocal("Bangladesh", "Republic Of Bangladesh", "Dhaka"))
-        countryList.add(KountryLocal("Bangladesh", "Republic Of Bangladesh", "Dhaka"))
-        return countryList
-    }
 }

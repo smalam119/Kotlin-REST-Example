@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.CountryList
+package com.thyme.smalam119.kountries.KountryList
 
 import android.content.Context
 import android.net.Uri
@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.Network.ApiService
-
 import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,14 +36,14 @@ class KountryListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = inflater!!.inflate(R.layout.fragment_kountry_list, container, false)
         prepareViews(view)
+
+        //network call for getting country list
         makeGetAllCountryNetworkCall()
         return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
@@ -69,8 +68,6 @@ class KountryListFragment : Fragment() {
         prepareRecyclerView(view)
         prepareProgressBar(view)
     }
-
-
 
     fun prepareRecyclerView(view: View) {
         recyclerVIew = view.findViewById<RecyclerView>(R.id.recycler_view)
@@ -102,15 +99,6 @@ class KountryListFragment : Fragment() {
                 })
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
@@ -128,4 +116,4 @@ class KountryListFragment : Fragment() {
             return fragment
         }
     }
-}// Required empty public constructor
+}

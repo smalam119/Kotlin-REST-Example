@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.CountryList
+package com.thyme.smalam119.kountries.KountryList
 
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import com.squareup.picasso.Picasso
 import com.thyme.smalam119.kountries.Cons
-import com.thyme.smalam119.kountries.KountryDetailActivity
+import com.thyme.smalam119.kountries.KountryDetail.KountryDetailActivity
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.R
 
@@ -48,22 +48,22 @@ class KountryListAdapter(val kountryList: ArrayList<Kountry>): RecyclerView.Adap
         return kountryListFiltered.size
     }
 
+    // perform the filtering when query is typed in search view
      fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
                 Log.d("MainAdapter", charString)
+
+                //if query string is empty add all in filtered list
                 if (charString.isEmpty()) {
                     kountryListFiltered = kountryList
                 } else {
                     var filteredList = ArrayList<Kountry>()
                     for (row in kountryList) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
+                        // if found query string add country in filtered lsit
                         if (row.name.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList!!.add(row)
-                            Log.d("MainAdapterMatcher", row.name)
                         }
                     }
 
@@ -75,9 +75,9 @@ class KountryListAdapter(val kountryList: ArrayList<Kountry>): RecyclerView.Adap
                 return filterResults
             }
 
+            // call back for showing result
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
                 kountryListFiltered = filterResults.values as ArrayList<Kountry>
-                Log.d("MainAdapterPublished", kountryListFiltered.size.toString())
                 notifyDataSetChanged()
             }
         }

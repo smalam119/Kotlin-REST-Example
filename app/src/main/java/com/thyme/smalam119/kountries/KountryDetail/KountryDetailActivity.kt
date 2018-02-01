@@ -1,10 +1,8 @@
-package com.thyme.smalam119.kountries
+package com.thyme.smalam119.kountries.KountryDetail
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,15 +11,16 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
+import com.thyme.smalam119.kountries.Cons
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.Network.ApiService
+import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
 class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     var mapFragment: SupportMapFragment? = null
-    var progressBar: ProgressBar? = null
     var capitalTV: TextView? = null
     var areaTV: TextView? = null
     var populationTV: TextView? = null
@@ -36,9 +35,12 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kountry_detail)
-        var alpha_code = intent.getStringExtra(Cons.ALPHA_2_CODE_EXTRA)
-        prepareProgressBar()
-        makeGetCountryNetworkCall(alpha_code)
+
+        // getting the 2 word country alpha code from main activity
+        var alphaCode = intent.getStringExtra(Cons.ALPHA_2_CODE_EXTRA)
+
+        // make get country network call
+        makeGetCountryNetworkCall(alphaCode)
     }
 
     fun prepareMap() {
@@ -47,6 +49,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment!!.getMapAsync(this)
     }
 
+    // place marker on the country geo graphic location
     fun placeMarker(googleMap: GoogleMap, latLng: LatLng) {
         val markerOptions = MarkerOptions()
         markerOptions.position(latLng)
@@ -55,23 +58,16 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun makeGetCountryNetworkCall(alphaCode: String) {
-        //progressBar!!.visibility = View.VISIBLE
         var apiService = ApiService.create()
         apiService.getKountry(alphaCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe ({
                     result ->
-                    //progressBar!!.visibility = View.GONE
                     prepareView(result)
                 }, { error ->
-                    //progressBar!!.visibility = View.GONE
                     error.printStackTrace()
                 })
-    }
-
-    fun prepareProgressBar() {
-        //progressBar = findViewById(R.id.progressBar)
     }
 
     fun prepareView(kountry: Kountry) {
@@ -111,7 +107,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap?) {
-        Log.d("KountryDetailActivity","OnMapReady")
+        // place the marker when map is ready
         placeMarker(p0!!,globalLatLng!!)
     }
 }

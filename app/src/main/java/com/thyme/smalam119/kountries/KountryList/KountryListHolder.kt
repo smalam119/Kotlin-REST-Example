@@ -1,11 +1,9 @@
-package com.thyme.smalam119.kountries.CountryList
+package com.thyme.smalam119.kountries.KountryList
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.thyme.smalam119.kountries.R
 
 /**
