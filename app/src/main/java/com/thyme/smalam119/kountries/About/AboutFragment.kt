@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.thyme.smalam119.kountries.R
+import org.jetbrains.anko.alert
 
 class AboutFragment : Fragment() {
     private var mParam1: String? = null
@@ -25,7 +26,8 @@ class AboutFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_favorite_kountry_list, container, false)
+        var v = inflater!!.inflate(R.layout.fragment_favorite_kountry_list, container, false)
+        return  v
     }
 
     fun onButtonPressed(uri: Uri) {

@@ -10,6 +10,7 @@ import android.net.Uri
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.thyme.smalam119.kountries.About.AboutFragment
@@ -100,6 +101,7 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
             }
 
             override fun onQueryTextChange(query: String): Boolean {
+                Log.d("tag","mListAdapter="+kountryListFragment!!.adapter!!)
                 kountryListFragment!!.adapter!!.getFilter().filter(query)
                 return false
             }

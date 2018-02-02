@@ -11,11 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import com.thyme.smalam119.kountries.Cons
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.Network.ApiService
 import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.jetbrains.anko.alert
 
 class KountryListFragment : Fragment() {
     private var mParam1: String? = null
@@ -25,6 +27,7 @@ class KountryListFragment : Fragment() {
     var recyclerVIew: RecyclerView? = null
     var progressBar: ProgressBar? = null
     var adapter: KountryListAdapter? = null
+    var kountryList = ArrayList<Kountry>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +41,13 @@ class KountryListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_kountry_list, container, false)
         prepareViews(view)
+        if(Cons.isConnectedWithNetwork(view.context)) {
+            //network call for getting country list
+            makeGetAllCountryNetworkCall()
+        } else {
+            showNetworkWarning(view)
+        }
 
-        //network call for getting country list
-        makeGetAllCountryNetworkCall()
         return view
     }
 
@@ -48,6 +55,14 @@ class KountryListFragment : Fragment() {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
         }
+    }
+
+    fun showNetworkWarning(view: View) {
+        view.context.alert("Please connect with internet","Warning") {
+            positiveButton("OK") {
+                activity.finish()
+            }
+        }.show()
     }
 
     override fun onAttach(context: Context?) {
@@ -67,6 +82,7 @@ class KountryListFragment : Fragment() {
     fun prepareViews(view: View) {
         prepareRecyclerView(view)
         prepareProgressBar(view)
+        prepareAdapter(kountryList)
     }
 
     fun prepareRecyclerView(view: View) {
@@ -83,6 +99,12 @@ class KountryListFragment : Fragment() {
         recyclerVIew!!.adapter = adapter
     }
 
+    fun norifyAdapter(kountryListForNetwork: ArrayList<Kountry>) {
+        kountryList.clear()
+        kountryList.addAll(kountryListForNetwork)
+        adapter!!.notifyDataSetChanged()
+    }
+
     fun makeGetAllCountryNetworkCall() {
         progressBar!!.visibility = View.VISIBLE
         var apiService = ApiService.create()
@@ -92,7 +114,7 @@ class KountryListFragment : Fragment() {
                 .subscribe ({
                     result ->
                     progressBar!!.visibility = View.GONE
-                    prepareAdapter(result)
+                    norifyAdapter(result)
                 }, { error ->
                     progressBar!!.visibility = View.GONE
                     error.printStackTrace()
