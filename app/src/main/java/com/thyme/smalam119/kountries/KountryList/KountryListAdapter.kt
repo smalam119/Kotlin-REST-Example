@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import com.squareup.picasso.Picasso
-import com.thyme.smalam119.kountries.Cons
+import com.thyme.smalam119.kountries.Utils.Cons
 import com.thyme.smalam119.kountries.KountryDetail.KountryDetailActivity
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.R

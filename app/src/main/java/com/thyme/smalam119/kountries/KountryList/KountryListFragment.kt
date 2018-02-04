@@ -4,27 +4,30 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
-import com.thyme.smalam119.kountries.Cons
+import com.thyme.smalam119.kountries.Utils.Cons
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.Network.ApiService
 import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.alert
+import com.thyme.smalam119.kountries.Utils.GridSpacingItemDecoration
+import android.util.TypedValue
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
+
 
 class KountryListFragment : Fragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
     private var mListener: OnFragmentInteractionListener? = null
 
-    var recyclerVIew: RecyclerView? = null
+    var recyclerView: RecyclerView? = null
     var progressBar: ProgressBar? = null
     var adapter: KountryListAdapter? = null
     var kountryList = ArrayList<Kountry>()
@@ -86,8 +89,10 @@ class KountryListFragment : Fragment() {
     }
 
     fun prepareRecyclerView(view: View) {
-        recyclerVIew = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerVIew!!.layoutManager = LinearLayoutManager(view.context, LinearLayout.VERTICAL, false)
+        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView!!.layoutManager = GridLayoutManager(view.context, 2);
+        recyclerView!!.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))
+        recyclerView!!.setItemAnimator(DefaultItemAnimator())
     }
 
     fun prepareProgressBar(view: View) {
@@ -96,7 +101,7 @@ class KountryListFragment : Fragment() {
 
     fun prepareAdapter(kountryList: ArrayList<Kountry>) {
         adapter = KountryListAdapter(kountryList)
-        recyclerVIew!!.adapter = adapter
+        recyclerView!!.adapter = adapter
     }
 
     fun norifyAdapter(kountryListForNetwork: ArrayList<Kountry>) {
@@ -124,6 +129,11 @@ class KountryListFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val r = resources
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
     }
 
     companion object {

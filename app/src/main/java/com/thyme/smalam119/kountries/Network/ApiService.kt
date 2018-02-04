@@ -1,6 +1,6 @@
 package com.thyme.smalam119.kountries.Network
 
-import com.thyme.smalam119.kountries.Cons
+import com.thyme.smalam119.kountries.Utils.Cons
 import com.thyme.smalam119.kountries.Model.Kountry
 import io.reactivex.Observable
 import retrofit2.Retrofit

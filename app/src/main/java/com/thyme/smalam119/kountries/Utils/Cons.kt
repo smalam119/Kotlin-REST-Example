@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries
+package com.thyme.smalam119.kountries.Utils
 
 import android.content.Context
 import android.net.ConnectivityManager
