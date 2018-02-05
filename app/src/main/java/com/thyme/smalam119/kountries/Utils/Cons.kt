@@ -2,6 +2,7 @@ package com.thyme.smalam119.kountries.Utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import java.util.*
 
 /**
  * Created by smalam119 on 1/30/18.
@@ -19,6 +20,13 @@ class Cons {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnected
+        }
+
+        fun randInt(min: Int, max: Int): Int {
+
+            val rand = Random()
+            val randomNum = rand.nextInt(max - min + 1) + min
+            return randomNum - 1
         }
     }
 }

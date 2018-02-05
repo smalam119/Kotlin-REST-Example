@@ -13,18 +13,18 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import com.thyme.smalam119.kountries.About.AboutFragment
+import com.thyme.smalam119.kountries.Random.RandomFragment
 import com.thyme.smalam119.kountries.R
 
-
 class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener {
+        RandomFragment.OnFragmentInteractionListener {
 
     override fun onFragmentInteraction(uri: Uri) {
     }
 
     var toolbar: Toolbar? = null
     var kountryListFragment: KountryListFragment? = null
+    var aboutFragment: RandomFragment? = null
     var bottomNavigationView: BottomNavigationView? = null
     var searchView: SearchView? = null
 
@@ -34,14 +34,12 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
                 R.id.home -> {
-                    kountryListFragment = KountryListFragment.Companion.newInstance("","")
-                    addFragment(kountryListFragment!!)
+                    addFragment(kountryListFragment!!,aboutFragment!!)
                     toolbar!!.visibility = View.VISIBLE
                     return true
                 }
                 R.id.favorite -> {
-                    val fragment = AboutFragment.Companion.newInstance("","")
-                    addFragment(fragment)
+                    addFragment(aboutFragment!!,kountryListFragment!!)
                     toolbar!!.visibility = View.INVISIBLE
                     return true
                 }
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
         setContentView(R.layout.activity_main)
         prepareAllView()
         // add kountry list fragment as default fragment
-        addFragment(kountryListFragment!!)
+        addFragment(kountryListFragment!!,aboutFragment!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,6 +68,7 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
         prepareToolBar()
         prepareBottomNavView()
         kountryListFragment = KountryListFragment.Companion.newInstance("","")
+        aboutFragment = RandomFragment.Companion.newInstance("","")
     }
 
     fun prepareToolBar() {
@@ -108,12 +107,24 @@ class MainActivity : AppCompatActivity(), KountryListFragment.OnFragmentInteract
         })
     }
 
-    private fun addFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
-                .replace(R.id.content, fragment, fragment.javaClass.getSimpleName())
-                .commit()
+    private fun addFragment(fragment: Fragment,fragment2: Fragment) {
+        if (fragment.isAdded) {
+            supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
+                    .hide(fragment2)
+                    .show(fragment)
+                    .commit()
+        } else {
+            supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
+                    .hide(fragment2)
+                    .add(R.id.content, fragment, fragment.javaClass.getSimpleName())
+                    .show(fragment)
+                    .commit()
+        }
+
     }
 
 }

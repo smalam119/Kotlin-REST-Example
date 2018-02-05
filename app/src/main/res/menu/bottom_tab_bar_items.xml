@@ -12,8 +12,8 @@
 
     <item
         android:id="@+id/favorite"
-        android:icon="@drawable/favorite_icon"
+        android:icon="@drawable/dice_icon"
         android:orderInCategory="100"
-        android:title="About"
+        android:title="Random"
         app:showAsAction="never" />
 </menu>

@@ -1,37 +1,37 @@
-package com.thyme.smalam119.kountries.KountryList
+package com.thyme.smalam119.kountries.Random
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
-import com.thyme.smalam119.kountries.Utils.Cons
+import android.widget.TextView
+import com.squareup.picasso.Picasso
+import com.thyme.smalam119.kountries.KountryDetail.KountryDetailActivity
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.Network.ApiService
 import com.thyme.smalam119.kountries.R
+import com.thyme.smalam119.kountries.Utils.Cons
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.alert
-import com.thyme.smalam119.kountries.Utils.GridSpacingItemDecoration
-import android.util.TypedValue
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
 
-
-class KountryListFragment : Fragment() {
+class RandomFragment : Fragment() {
     private var mParam1: String? = null
     private var mParam2: String? = null
-    private var mListener: OnFragmentInteractionListener? = null
 
-    var recyclerView: RecyclerView? = null
+    private var mListener: OnFragmentInteractionListener? = null
     var progressBar: ProgressBar? = null
-    var adapter: KountryListAdapter? = null
-    var kountryList = ArrayList<Kountry>()
+    var countryNameTV: TextView? = null
+    var countryNameOfficialTV: TextView? = null
+    var capitalNameTV: TextView? = null
+    var flagImageView: ImageView? = null
     var swipeLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,30 +44,16 @@ class KountryListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_kountry_list, container, false)
-        prepareViews(view)
-        if(Cons.isConnectedWithNetwork(view.context)) {
-            //network call for getting country list
-            makeGetAllCountryNetworkCall()
-        } else {
-            showNetworkWarning(view)
-        }
-
-        return view
+        var v = inflater!!.inflate(R.layout.fragment_random_kountry, container, false)
+        prepareView(v)
+        makeGetRandomCountryNetworkCall()
+        return  v
     }
 
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
         }
-    }
-
-    fun showNetworkWarning(view: View) {
-        view.context.alert("Please connect with internet","Warning") {
-            positiveButton("OK") {
-                activity.finish()
-            }
-        }.show()
     }
 
     override fun onAttach(context: Context?) {
@@ -84,27 +70,19 @@ class KountryListFragment : Fragment() {
         mListener = null
     }
 
-    fun prepareViews(view: View) {
-        prepareRecyclerView(view)
-        prepareProgressBar(view)
-        prepareSwipeRefresh(view)
-        prepareAdapter(kountryList)
+    interface OnFragmentInteractionListener {
+        fun onFragmentInteraction(uri: Uri)
     }
 
-    fun prepareRecyclerView(view: View) {
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView!!.layoutManager = GridLayoutManager(view.context, 2) as RecyclerView.LayoutManager?;
-        recyclerView!!.addItemDecoration(GridSpacingItemDecoration(2, dpToPx(10), true))
-        recyclerView!!.setItemAnimator(DefaultItemAnimator())
-    }
-
-    fun prepareProgressBar(view: View) {
+    fun prepareView(view: View) {
+        countryNameTV = view.findViewById<TextView>(R.id.country_name_text_view)
+        countryNameOfficialTV = view.findViewById<TextView>(R.id.country_name_official_text_view)
+        capitalNameTV = view.findViewById<TextView>(R.id.capital_text_view)
         progressBar = view.findViewById(R.id.progressBar)
-    }
 
-    fun prepareAdapter(kountryList: ArrayList<Kountry>) {
-        adapter = KountryListAdapter(kountryList)
-        recyclerView!!.adapter = adapter
+        flagImageView = view.findViewById<ImageView>(R.id.flag_image_view)
+        flagImageView!!.scaleType = ImageView.ScaleType.FIT_XY
+        prepareSwipeRefresh(view)
     }
 
     fun prepareSwipeRefresh(view: View){
@@ -116,20 +94,36 @@ class KountryListFragment : Fragment() {
 
         var onRefreshListener = object :SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
-                makeGetAllCountryNetworkCall()
+                makeGetRandomCountryNetworkCall()
             }
 
         }
         swipeLayout!!.setOnRefreshListener(onRefreshListener)
     }
 
-    fun norifyAdapter(kountryListForNetwork: ArrayList<Kountry>) {
-        kountryList.clear()
-        kountryList.addAll(kountryListForNetwork)
-        adapter!!.notifyDataSetChanged()
+    fun bindData(kountry: Kountry) {
+        countryNameTV!!.text = kountry.name
+        if (kountry.altSpellings.size >= 2) {
+            countryNameOfficialTV!!.text = kountry.altSpellings[1]
+        } else {
+            countryNameOfficialTV!!.text = "N/A"
+        }
+        capitalNameTV!!.text = kountry.capital
+
+        Picasso
+                .with(context)
+                .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
+                .into(flagImageView!!)
+
+        flagImageView!!.setOnClickListener({ v ->
+            val intent = Intent(context, KountryDetailActivity::class.java)
+            intent.putExtra(Cons.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)
+            ContextCompat.startActivity(context, intent, null)
+        })
     }
 
-    fun makeGetAllCountryNetworkCall() {
+    fun makeGetRandomCountryNetworkCall() {
+        var randomKountry: Kountry? = null
         progressBar!!.visibility = View.VISIBLE
         if (swipeLayout!!.isRefreshing) {
             swipeLayout!!.setRefreshing(false)
@@ -141,28 +135,21 @@ class KountryListFragment : Fragment() {
                 .subscribe ({
                     result ->
                     progressBar!!.visibility = View.GONE
-                    norifyAdapter(result)
+                    randomKountry = result.get(Cons.randInt(1,256))
+                    bindData(randomKountry!!)
                 }, { error ->
                     progressBar!!.visibility = View.GONE
                     error.printStackTrace()
+                    randomKountry = null
                 })
-    }
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-    private fun dpToPx(dp: Int): Int {
-        val r = resources
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
     }
 
     companion object {
         private val ARG_PARAM1 = "param1"
         private val ARG_PARAM2 = "param2"
-        fun newInstance(param1: String, param2: String): KountryListFragment {
-            val fragment = KountryListFragment()
+
+        fun newInstance(param1: String, param2: String): RandomFragment {
+            val fragment = RandomFragment()
             val args = Bundle()
             args.putString(ARG_PARAM1, param1)
             args.putString(ARG_PARAM2, param2)

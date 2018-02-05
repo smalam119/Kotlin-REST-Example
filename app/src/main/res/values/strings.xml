@@ -7,6 +7,7 @@
     <string name="country_name_placeholder">Bangladesh</string>
     <string name="country_name_official_placeholder">Republic Of Bangladesh</string>
     <string name="capital_placeholder">Dhaka</string>
+    <string name="placeholder_loading">Loading...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
