@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.KountryList
+package com.thyme.smalam119.kountries.Modules.KountryList
 
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import com.squareup.picasso.Picasso
-import com.thyme.smalam119.kountries.Utils.Cons
-import com.thyme.smalam119.kountries.KountryDetail.KountryDetailActivity
+import com.thyme.smalam119.kountries.Utils.AppConstants
+import com.thyme.smalam119.kountries.Modules.KountryDetail.KountryDetailActivity
 import com.thyme.smalam119.kountries.Model.Kountry
 import com.thyme.smalam119.kountries.R
 
@@ -35,11 +35,11 @@ class KountryListAdapter(val kountryList: ArrayList<Kountry>): RecyclerView.Adap
         holder?.capitalNameTV?.text = kountry.capital
         Picasso
                 .with(holder?.itemView?.context)
-                .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
+                .load(AppConstants.BASE_URL_FLAG + kountry.alpha2Code + ".png")
                 .into(holder?.flagImageView)
         holder?.itemView!!.setOnClickListener({ v ->
             val intent = Intent(holder?.itemView!!.context, KountryDetailActivity::class.java)
-            intent.putExtra(Cons.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)
+            intent.putExtra(AppConstants.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)
             startActivity(holder?.itemView!!.context,intent,null)
         })
     }

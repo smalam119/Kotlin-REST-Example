@@ -7,7 +7,7 @@ import java.util.*
 /**
  * Created by smalam119 on 1/30/18.
  */
-class Cons {
+class AppConstants {
     companion object {
         // base url to get country information
         val BASE_URL = "https://restcountries.eu/"

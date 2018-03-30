@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.Random
+package com.thyme.smalam119.kountries.Modules.Random
 
 import android.content.Context
 import android.content.Intent
@@ -14,11 +14,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import com.thyme.smalam119.kountries.KountryDetail.KountryDetailActivity
+import com.thyme.smalam119.kountries.Modules.KountryDetail.KountryDetailActivity
 import com.thyme.smalam119.kountries.Model.Kountry
-import com.thyme.smalam119.kountries.Network.ApiService
+import com.thyme.smalam119.kountries.Utils.Network.ApiClient
 import com.thyme.smalam119.kountries.R
-import com.thyme.smalam119.kountries.Utils.Cons
+import com.thyme.smalam119.kountries.Utils.AppConstants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -112,12 +112,12 @@ class RandomFragment : Fragment() {
 
         Picasso
                 .with(context)
-                .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
+                .load(AppConstants.BASE_URL_FLAG + kountry.alpha2Code + ".png")
                 .into(flagImageView!!)
 
         flagImageView!!.setOnClickListener({ v ->
             val intent = Intent(context, KountryDetailActivity::class.java)
-            intent.putExtra(Cons.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)
+            intent.putExtra(AppConstants.ALPHA_2_CODE_EXTRA,kountry.alpha2Code)
             ContextCompat.startActivity(context, intent, null)
         })
     }
@@ -128,14 +128,14 @@ class RandomFragment : Fragment() {
         if (swipeLayout!!.isRefreshing) {
             swipeLayout!!.setRefreshing(false)
         }
-        var apiService = ApiService.create()
+        var apiService = ApiClient.create()
         apiService.getAllKountries()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe ({
                     result ->
                     progressBar!!.visibility = View.GONE
-                    randomKountry = result.get(Cons.randInt(1,256))
+                    randomKountry = result.get(AppConstants.randInt(1,256))
                     bindData(randomKountry!!)
                 }, { error ->
                     progressBar!!.visibility = View.GONE

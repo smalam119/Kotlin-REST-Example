@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.KountryDetail
+package com.thyme.smalam119.kountries.Modules.KountryDetail
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,9 +12,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
-import com.thyme.smalam119.kountries.Utils.Cons
+import com.thyme.smalam119.kountries.Utils.AppConstants
 import com.thyme.smalam119.kountries.Model.Kountry
-import com.thyme.smalam119.kountries.Network.ApiService
+import com.thyme.smalam119.kountries.Utils.Network.ApiClient
 import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -39,7 +39,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_kountry_detail)
 
         // getting the 2 word country alpha code from main activity
-        var alphaCode = intent.getStringExtra(Cons.ALPHA_2_CODE_EXTRA)
+        var alphaCode = intent.getStringExtra(AppConstants.ALPHA_2_CODE_EXTRA)
 
         prepareView()
 
@@ -63,7 +63,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun makeGetCountryNetworkCall(alphaCode: String) {
         shimmerViewContainer!!.startShimmerAnimation()
-        var apiService = ApiService.create()
+        var apiService = ApiClient.create()
         apiService.getKountry(alphaCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -96,7 +96,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         imageView = findViewById(R.id.flag_image_view_detail)
         Picasso
                 .with(this)
-                .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
+                .load(AppConstants.BASE_URL_FLAG + kountry.alpha2Code + ".png")
                 .into(imageView)
 
         nameTV!!.text = kountry.name
@@ -110,7 +110,7 @@ class KountryDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         Picasso
                 .with(this)
-                .load(Cons.BASE_URL_FLAG + kountry.alpha2Code + ".png")
+                .load(AppConstants.BASE_URL_FLAG + kountry.alpha2Code + ".png")
                 .into(imageView)
 
         prepareMap()

@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".KountryList.MainActivity">
+        <activity android:name="com.thyme.smalam119.kountries.Modules.KountryList.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".KountryDetail.KountryDetailActivity"
+            android:name="com.thyme.smalam119.kountries.Modules.KountryDetail.KountryDetailActivity"
             android:label="@string/title_activity_kountry_detail"
             android:theme="@style/AppTheme">
         </activity>

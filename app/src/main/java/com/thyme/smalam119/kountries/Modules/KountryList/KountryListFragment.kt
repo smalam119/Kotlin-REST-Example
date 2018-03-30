@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.KountryList
+package com.thyme.smalam119.kountries.Modules.KountryList
 
 import android.content.Context
 import android.net.Uri
@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import com.thyme.smalam119.kountries.Utils.Cons
+import com.thyme.smalam119.kountries.Utils.AppConstants
 import com.thyme.smalam119.kountries.Model.Kountry
-import com.thyme.smalam119.kountries.Network.ApiService
+import com.thyme.smalam119.kountries.Utils.Network.ApiClient
 import com.thyme.smalam119.kountries.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -46,7 +46,7 @@ class KountryListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var view = inflater!!.inflate(R.layout.fragment_kountry_list, container, false)
         prepareViews(view)
-        if(Cons.isConnectedWithNetwork(view.context)) {
+        if(AppConstants.isConnectedWithNetwork(view.context)) {
             //network call for getting country list
             makeGetAllCountryNetworkCall()
         } else {
@@ -134,7 +134,7 @@ class KountryListFragment : Fragment() {
         if (swipeLayout!!.isRefreshing) {
             swipeLayout!!.setRefreshing(false)
         }
-        var apiService = ApiService.create()
+        var apiService = ApiClient.create()
         apiService.getAllKountries()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

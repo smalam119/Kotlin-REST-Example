@@ -1,4 +1,4 @@
-package com.thyme.smalam119.kountries.KountryList
+package com.thyme.smalam119.kountries.Modules.KountryList
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
