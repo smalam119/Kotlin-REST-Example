@@ -2,8 +2,7 @@
 
 This project demonstrates the implementation of a REST backed android application using Kotlin. It shows how to use RetroFit, RecyclerView, 
 Cardview, Fragments, SearchView etc altogether in Kotlin. As a end product this application provides a list of countries and their details.
-For country list [REST Countries](https://github.com/fayder/restcountries) API is used and [Flags](https://github.com/emcrisostomo/flags) API
-for flags image.
+For country list [REST Countries](https://github.com/fayder/restcountries) API and for flag images [Flags](https://github.com/emcrisostomo/flags) API is used.
 
 [Download](https://play.google.com/store/apps/details?id=com.thyme.smalam119.kountries&hl=en) it from Google Play
 
